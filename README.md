@@ -3,7 +3,7 @@
 **Authors**: Jeremi Degenhardt (StudOn-Username/Enrollment Number), Leo Gfeller (StudOn-Username/Enrollment Number), Frederic von Gahlen (StudOn-Username/Enrollment Number), Alexander Nigg (StudOn-Username/Enrollment Number)
 
 ## Motivation
-Define your research question. How is this document structured?
+Our team wants to develop a machine learning program that can automatically detect fraudulent credit card transactions and flag them as such.
 
 ## 2 Related Work
 What have others done in your area of work/to answer similar questions? Discuss existing work in the context of your project.
