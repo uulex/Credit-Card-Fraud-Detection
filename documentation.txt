@@ -1,0 +1,16 @@
+Week1 (19.04 - 03.05):
+
+- Finding Topic
+- Research: Datasets, what has already been done
+- First implementations: Loading Data and visualizing
+
+Questions: 
+
+Week2 (03.05 - 16.05):
+
+- Data Preparation (dependent/independent)
+- Research on what machine learning model to use
+- Preprocessing (standartization)
+- Modeling (started to)
+
+Questions: How could we design our streamlit app? Any ideas? 
