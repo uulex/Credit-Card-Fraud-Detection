@@ -10,7 +10,7 @@ Week2 (03.05 - 16.05):
 
 - Data Preparation (dependent/independent)
 - Research on what machine learning model to use
-- Preprocessing (standartization)
+- Preprocessing (standardization)
 - Modeling (started to)
 
 Questions: How could we design our streamlit app? Any ideas? 
