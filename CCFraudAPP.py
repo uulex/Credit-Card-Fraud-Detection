@@ -4,27 +4,39 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-st.title('Credit Card Fraud Detection')
+def home():
+    st.title("Home")
+    st.write("Welcome to the home page!")
 
-@st.cache_data
-def load_data(nrows):
-    df = pd.read_csv('creditcard_2023.csv')
-    lowercase = lambda x: str(x).lower()
-    df.rename(lowercase, axis='columns', inplace=True)
-    return df
+def data_exploration():
+    st.title("Data Exploration")
+    st.write("Explore your data here.")
+    # Add your data exploration code here
+    # Example: st.dataframe(df)
 
+def model_training():
+    st.title("Model Training")
+    st.write("Train your model here.")
+    # Add your model training code here
+    # Example: st.button("Train Model")
 
-# Create a text element and let the reader know the data is loading.
-data_load_state = st.text('Loading data...')
-# Load 10,000 rows of data into the dataframe.
-df = load_data(10000)
-# Notify the reader that the data was successfully loaded.
-data_load_state.text("Done! (using st.cache_data)")
+def fraud_detection():
+    st.title("Fraud Detection")
+    st.write("Detect fraud here.")
+    # Add your fraud detection code here
+    # Example: st.button("Detect Fraud")
 
+# Create a sidebar with navigation options
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Go to", ["Home", "Data Exploration", "Model Training", "Fraud Detection"])
 
-st.subheader('Raw data')
-st.write(df)
-
-st.subheader('Correlation between each column and Class column')
-
+# Display the selected page
+if page == "Home":
+    home()
+elif page == "Data Exploration":
+    data_exploration()
+elif page == "Model Training":
+    model_training()
+elif page == "Fraud Detection":
+    fraud_detection()
 
