@@ -1,2 +1,3 @@
 matplotlib.pyplot
 seaborn
+streamlit
