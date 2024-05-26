@@ -1,3 +1,3 @@
-matplotlib.pyplot
+matplotlib
 seaborn
 streamlit
