@@ -8,7 +8,7 @@ st.title('Credit Card Fraud Detection')
 
 @st.cache_data
 def load_data(nrows):
-    df = pd.read_csv(r'C:\ML4B Project\creditcard_2023.csv')
+    df = pd.read_csv('creditcard_2023.csv')
     lowercase = lambda x: str(x).lower()
     df.rename(lowercase, axis='columns', inplace=True)
     return df
