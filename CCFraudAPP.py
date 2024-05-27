@@ -1,18 +1,44 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 import seaborn as sns
 
+
+data = pd.read_csv("creditcard_2023.csv")
+
 def home():
-    st.title("Home")
-    st.write("Welcome to the home page!")
+    st.title("Credit Card Fraud Detection")
+    st.subheader("Motivation")
+    st.write("Our team took on the task to develop a ML-modell which given certain parameters of a credit card transaction could determine wether a transaction was fraudulent or not. ")
 
 def data_exploration():
     st.title("Data Exploration")
-    st.write("Explore your data here.")
-    # Add your data exploration code here
-    # Example: st.dataframe(df)
+    st.subheader("Raw Data")
+    st.markdown("""
+    The columns of our dataset consist of <span style="color: blue;">28 anonymized Parameters</span>, 
+    the <span style="color: blue;">transaction-amount in $</span>, a  
+    <span style="color: blue;">unique Id</span>, and the <span style="color: blue;">Class</span> which determines 
+    if a transaction was <span style="color: blue;">fraudulent or not</span> (1 = fraudulent; 0 = not fraudulent). 
+    The <span style="color: blue;">total number of rows</span> in our dataset is <span style="color: blue;">568630</span>.
+    """, unsafe_allow_html=True)
+    with st.expander("Show raw data"):
+        st.write(data.shape)
+        st.write(data.head())
+
+    st.subheader("Correlation Matrix")
+    st.markdown("""The highest correlation between parameters are between <span style="color: blue;">V16, V17</span> and <span style="color: blue;">V18</span>.""", unsafe_allow_html=True)
+    heatmap = plt.figure(figsize=[20,10])
+    sns.heatmap(data.corr(),cmap="crest", annot=True)
+    with st.expander("Show correlation heatmap"):
+        st.pyplot(heatmap)
+
+    st.subheader("Distribution of amount-parameter")
+    st.markdown("""The <span style="color: blue;">amounts</span> of money transferred in the transactions contained in or data set are <span style="color: blue;">evenly distributed</span>.""", unsafe_allow_html=True)
+
+
+
+
 
 def model_training():
     st.title("Model Training")
@@ -40,3 +66,11 @@ elif page == "Model Training":
 elif page == "Fraud Detection":
     fraud_detection()
 
+#Text at bottom of sidebar
+st.sidebar.markdown(
+    """
+    <hr style="margin-top: 20px; margin-bottom: 10px;">
+    <p style="font-size: 12px;">An App Created by Jeremi Degenhardt, Frederic von Gahlen, Leo Gfeller and Alexander Nigg</p>
+    """,
+    unsafe_allow_html=True
+)
