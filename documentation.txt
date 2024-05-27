@@ -13,4 +13,8 @@ Week2 (03.05 - 16.05):
 - Preprocessing (standardization)
 - Modeling (started to)
 
-Questions: How could we design our streamlit app? Any ideas? 
+Week3 (16.05-31.05):
+
+- Modeling (Logistic Regression)
+- Started to implement search trees and k-means clustering
+- Developement of Streamlit app
