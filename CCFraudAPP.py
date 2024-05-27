@@ -16,25 +16,25 @@ def data_exploration():
     st.title("Data Exploration")
     st.subheader("Raw Data")
     st.markdown("""
-    The columns of our dataset consist of <span style="color: blue;">28 anonymized Parameters</span>, 
-    the <span style="color: blue;">transaction-amount in $</span>, a  
-    <span style="color: blue;">unique Id</span>, and the <span style="color: blue;">Class</span> which determines 
-    if a transaction was <span style="color: blue;">fraudulent or not</span> (1 = fraudulent; 0 = not fraudulent). 
-    The <span style="color: blue;">total number of rows</span> in our dataset is <span style="color: blue;">568630</span>.
+    The columns of our dataset consist of <span style="color: light blue;">28 anonymized Parameters</span>, 
+    the <span style="color: light blue;">transaction-amount in $</span>, a  
+    <span style="color: light blue;">unique Id</span>, and the <span style="color: light blue;">Class</span> which determines 
+    if a transaction was <span style="color: light blue;">fraudulent or not</span> (1 = fraudulent; 0 = not fraudulent). 
+    The <span style="color: light blue;">total number of rows</span> in our dataset is <span style="color: light blue;">568630</span>.
     """, unsafe_allow_html=True)
     with st.expander("Show raw data"):
         st.write(data.shape)
         st.write(data.head())
 
     st.subheader("Correlation Matrix")
-    st.markdown("""The highest correlation between parameters are between <span style="color: blue;">V16, V17</span> and <span style="color: blue;">V18</span>.""", unsafe_allow_html=True)
+    st.markdown("""The highest correlation between parameters are between <span style="color: light blue;">V16, V17</span> and <span style="color: light blue;">V18</span>.""", unsafe_allow_html=True)
     heatmap = plt.figure(figsize=[20,10])
     sns.heatmap(data.corr(),cmap="crest", annot=True)
     with st.expander("Show correlation heatmap"):
         st.pyplot(heatmap)
 
     st.subheader("Distribution of amount-parameter")
-    st.markdown("""The <span style="color: blue;">amounts</span> of money transferred in the transactions contained in or data set are <span style="color: blue;">evenly distributed</span>.""", unsafe_allow_html=True)
+    st.markdown("""The <span style="color: light blue;">amounts</span> of money transferred in the transactions contained in or data set are <span style="color: light blue;">evenly distributed</span>.""", unsafe_allow_html=True)
 
 
 
