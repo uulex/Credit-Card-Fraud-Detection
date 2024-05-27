@@ -1,6 +1,6 @@
 # Machine Learning Credit Card Fraud Detection
 
-**Authors**: Jeremi Degenhardt (StudOn-Username/Enrollment Number), Leo Gfeller (StudOn-Username/Enrollment Number), Frederic von Gahlen (StudOn-Username/Enrollment Number), Alexander Nigg (StudOn-Username/Enrollment Number)
+**Authors**: Jeremi Degenhardt (ez03obyk/23121559), Leo Gfeller (aj20ibuj/23188883), Frederic von Gahlen (ge29zogy/23156365), Alexander Nigg (to98wiju/23220114)
 
 ## Motivation
 Our team wants to develop a machine learning program that can automatically detect fraudulent credit card transactions and flag them as such.
