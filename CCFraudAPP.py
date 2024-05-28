@@ -168,10 +168,13 @@ def model_training():
 def model_eval(actual, predicted):
     acc_score = accuracy_score(actual, predicted)
     conf_matrix = confusion_matrix(actual, predicted)
-    class_rep = classification_report (actual, predicted)
-    print("Model Accuracy: ", round(acc_score, 2))
-    print(conf_matrix)
-    print(class_rep)
+    class_rep = classification_report(actual, predicted)
+
+    st.write(f"Accuracy Score: {round(acc_score, 2)}")
+    st.write("Confusion Matrix:")
+    st.write(conf_matrix)
+    st.write("Classification Report:")
+    st.write(class_rep)
 
 
 # Create a sidebar with navigation options
