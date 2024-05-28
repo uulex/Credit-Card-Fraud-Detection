@@ -13,7 +13,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import LabelEncoder
 
 
-data = pd.read_csv(r"C:\ML4B Project\creditcard_2023.csv")
+data = pd.read_csv("creditcard_2023.csv")
 
 def home():
     st.title("Credit Card Fraud Detection")
