@@ -1,22 +1,22 @@
 # Machine Learning Credit Card Fraud Detection
 
-**Authors**: Jeremi Degenhardt (StudOn-Username/Enrollment Number), Leo Gfeller (StudOn-Username/Enrollment Number), Frederic von Gahlen (StudOn-Username/Enrollment Number), Alexander Nigg (StudOn-Username/Enrollment Number)
+**Authors**: Jeremi Degenhardt (ez03obyk/23121559), Leo Gfeller (aj20ibuj/23188883), Frederic von Gahlen (ge29zogy/23156365), Alexander Nigg (to98wiju/23220114)
 
 ## Motivation
 Our team wants to develop a machine learning program that can automatically detect fraudulent credit card transactions and flag them as such.
 
 ## 2 Related Work
-What have others done in your area of work/to answer similar questions? Discuss existing work in the context of your project.
+There have been a few projects on the area of credit card fraut detection, but nearly always the features have been anonymized. We wanted to firstly display what the given data depicted in an abstract context, visualize the given data and then predict if the transaction is fraudulent or not with different approaches.
 
 ## 3 Methodology
 ### 3.1 General Methodology
-How did you proceed to achieve your project goals? Describe the steps you undertook. Aim: Others should understand your research process.
+Since theres already projects that worked with credit card fraud detection, we looked at what others have already done in that field, and compared that with the approaches we wanted to try out. Then we looked at different machine learnen processes e. g. logistic regression or search trees and compared the performance of the different approaches.
 
 ### 3.2 Data Understanding and Preparation
-Introduce the dataset to the reader. Describe the structure and size of your dataset. Describe any specialties. Explain how you prepared the dataset for your project.
+We have choosen a big dataset with nearly 550k entries. The dataset involves different features ranging from V1 to V27. One of our biggest challanges was the anonymization of our dataset which makes it harder to understand what excactly is going on and also what features the algorithm is working with. Then we also have an output feature determening if the transaction was fraudulent or not. Forutnately, the dataset was quite well maintained, had no null values and is also really well distributed (50% fraudulent/non-fraudulent transactions)
 
 ### 3.3 Modeling and Evaluation
-Describe the model architecture(s) you selected. Explain how you trained your models. Describe how you evaluated your models and which metrics you used.
+We have chosen to try out different model architectures to predict our outcome and to compare these different outputs. We chose the logistic regression model, the random decision tree and the k-means clustering to work with and to be compare to one another .
 
 ## 4 Results
 Describe what artifacts you have built. List the libraries and tools you used. Explain the concept of your app. Describe the results you achieved by applying your trained models on unseen data. Use descriptive language (no judgment, no discussion in this section -> just show what you built).
