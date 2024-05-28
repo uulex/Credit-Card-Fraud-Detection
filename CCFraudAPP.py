@@ -11,6 +11,7 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import LabelEncoder
+import plotly.express as px
 
 
 data = pd.read_csv("creditcard_2023.csv")
@@ -34,12 +35,14 @@ def data_exploration():
         st.write(data.shape)
         st.write(data.head())
 
-    st.subheader("Correlation Matrix")
-    st.markdown("""The highest correlation between parameters are between <span style="color: red;">V16</span>, <span style="color: red;">V17</span> and <span style="color: red;">V18</span>.""", unsafe_allow_html=True)
-    heatmap = plt.figure(figsize=[20,10])
-    sns.heatmap(data.corr(),cmap="crest", annot=True)
-    with st.expander("Show correlation heatmap"):
-        st.pyplot(heatmap)
+    if st.checkbox('Show interactive correlation heatmap'):
+        fig = px.imshow(data.corr(), text_auto=True, aspect='auto', color_continuous_scale='viridis')
+        st.plotly_chart(fig)
+    else:  # Add this else statement to keep the original behavior
+        heatmap = plt.figure(figsize=[20,10])
+        sns.heatmap(data.corr(), cmap="crest", annot=True)
+        with st.expander("Show correlation heatmap"):
+            st.pyplot(heatmap)
 
 
     st.subheader("Feature Correlations with Class")
@@ -88,25 +91,18 @@ def data_exploration():
             st.pyplot(plt)
 
         elif visual == "Distribution of Class":
-            fig, ax = plt.subplots(figsize=[10, 6], facecolor='#2e2e2e')  # Anthracite background
-            fig.patch.set_facecolor('#2e2e2e')  # Set the figure background color
-
-            data["Class"].value_counts().plot.pie(
-                autopct="%3.1f%%", 
-                colors=["lightblue", "red"], 
-                startangle=140, 
-                explode=(0.1, 0), 
-                ax=ax
-            )
-            plt.title("Distribution of Class", color='white')
-            plt.ylabel("")  # Hide the y-label for better visual appeal
-            ax.legend(["Not Fraudulent", "Fraudulent"], loc="upper right", framealpha=0.5)
-            plt.setp(ax.get_legend().get_texts(), color='white')  # Set legend text color to white
-            plt.setp(ax.texts, color='white')  # Set pie chart text color to white
-            st.pyplot(fig)
+            class_counts = data["Class"].value_counts()
+            labels = ["Not Fraudulent", "Fraudulent"]
+            colors = ["lightblue", "red"]
+    
+            fig = px.pie(data, names=class_counts.index, title="Distribution of Class", 
+                 values=class_counts.values, color_discrete_sequence=colors, 
+                 hole=0.3, labels=labels)
+    
+            st.plotly_chart(fig)
 
 
-def model_training():
+def model_training():   
 
     x = data.drop(['id','Class'],axis=1) # Id not important for our use
     y = data.Class # Save Class attribute (fraudelent/non-fraudulent in own variable)
@@ -148,7 +144,7 @@ def model_training():
     """, unsafe_allow_html=True)
 
 
-    st.subheader("Our Modell is now ready to Run!")
+    st.subheader("Our Model is now ready to Run!")
     button_key = "train_model_button_" + str(np.random.randint(1e6))  # Generate a unique key
     if st.button("Train Model", key=button_key):
         lr=LogisticRegression()
