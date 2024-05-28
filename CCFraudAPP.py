@@ -78,7 +78,7 @@ def data_exploration():
     with st.expander("Show Visual for Amount or Class"):
         visual = st.selectbox("Select Visual", ["Distribution of Amount", "Distribution of Class"])
         
-        if visual == "KDE Plot of Amount":
+        if visual == "Distribution of Amount":
             plt.figure(figsize=[10, 6])
             sns.kdeplot(data=data["Amount"], fill=True, color="skyblue", bw_adjust=0.5)
             plt.title("KDE Plot of Transaction Amount")
@@ -87,7 +87,7 @@ def data_exploration():
             plt.grid(True)
             st.pyplot(plt)
 
-        elif visual == "Class Distribution Pie Chart":
+        elif visual == "Distribution of Class":
             fig, ax = plt.subplots(figsize=[10, 6], facecolor='#2e2e2e')  # Anthracite background
             fig.patch.set_facecolor('#2e2e2e')  # Set the figure background color
 
