@@ -97,36 +97,21 @@ def data_exploration():
 
     
     st.subheader("Distribution of Parameter Amount and Classifier Class")
-    st.markdown("""Our dataset is <span style="color: red;">equally devided</span> into <span style="color: red;">fraudulent</span> and <span style="color: red;">non-fraudulent</span> transactions. The parameter <span style="color: red;">amount</span> meaning the amount of money send in a transaction is <span style="color: red;"> evenly distributed</span>.""", unsafe_allow_html=True)
+    st.markdown("""Our dataset is <span style="color: red;">equally divided</span> into <span style="color: red;">fraudulent</span> and <span style="color: red;">non-fraudulent</span> transactions. The parameter <span style="color: red;">amount</span> meaning the amount of money sent in a transaction is <span style="color: red;">evenly distributed</span>.""", unsafe_allow_html=True)
+
     with st.expander("Show Visual for Amount or Class"):
         visual = st.selectbox("Select Visual", ["Distribution of Amount", "Distribution of Class"])
-        
-        if visual == "KDE Plot of Amount":
-            plt.figure(figsize=[10, 6])
-            sns.kdeplot(data=data["Amount"], fill=True, color="skyblue", bw_adjust=0.5)
-            plt.title("KDE Plot of Transaction Amount")
-            plt.xlabel("Transaction Amount")
-            plt.ylabel("Density")
-            plt.grid(True)
-            st.pyplot(plt)
+    
+        if visual == "Distribution of Amount":
+            fig = px.histogram(data, x="Amount", nbins=30, title="Distribution of Transaction Amount", labels={"Amount": "Transaction Amount"})
+            fig.update_layout(showlegend=False)
+            st.plotly_chart(fig)
 
         elif visual == "Distribution of Class":
-            fig, ax = plt.subplots(figsize=[10, 6], facecolor='#2e2e2e')  # Anthracite background
-            fig.patch.set_facecolor('#2e2e2e')  # Set the figure background color
-
-            data["Class"].value_counts().plot.pie(
-                autopct="%3.1f%%", 
-                colors=["lightblue", "red"], 
-                startangle=140, 
-                explode=(0.1, 0), 
-                ax=ax
-            )
-            plt.title("Distribution of Class", color='white')
-            plt.ylabel("")  # Hide the y-label for better visual appeal
-            ax.legend(["Not Fraudulent", "Fraudulent"], loc="upper right", framealpha=0.5)
-            plt.setp(ax.get_legend().get_texts(), color='white')  # Set legend text color to white
-            plt.setp(ax.texts, color='white')  # Set pie chart text color to white
-            st.pyplot(fig)
+            class_distribution = data["Class"].value_counts().reset_index()
+            class_distribution.columns = ["Class", "Count"]
+            fig = px.pie(class_distribution, values="Count", names="Class", title="Distribution of Class", color_discrete_sequence=["lightblue", "red"])
+            st.plotly_chart(fig)
 
 
 def model_training():   
