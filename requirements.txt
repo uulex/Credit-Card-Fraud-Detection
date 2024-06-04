@@ -2,3 +2,4 @@ matplotlib
 seaborn
 streamlit
 scikit-learn
+plotly
