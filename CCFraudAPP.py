@@ -6,7 +6,7 @@ import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
@@ -115,21 +115,19 @@ def data_exploration():
 
 
 def model_training():   
-
-    x = data.drop(['id','Class'],axis=1) # Id not important for our use
-    y = data.Class # Save Class attribute (fraudelent/non-fraudulent in own variable)
+    x = data.drop(['id', 'Class'], axis=1)  # Id not important for our use
+    y = data['Class']  # Save Class attribute (fraudulent/non-fraudulent in own variable)
 
     sc = StandardScaler()
     x_scaled = sc.fit_transform(x) 
-    x_scaled_df = pd.DataFrame(x_scaled,columns=x.columns)
+    x_scaled_df = pd.DataFrame(x_scaled, columns=x.columns)
 
-    x_train,x_test,y_train,y_test = train_test_split(x_scaled_df,y,test_size=0.25,random_state=15,stratify= y) 
+    x_train, x_test, y_train, y_test = train_test_split(x_scaled_df, y, test_size=0.25, random_state=15, stratify=y) 
     # Creating training and testing dataset
     
     st.title("Model Training")
     
     st.subheader("Data Preparation and Preprocessing")
-
     st.markdown("""
     To start the process of training our ML-Model we need to prepare our dataset. 
     First we <span style="color: red;">divide</span> our dataset into <span style="color: red;">dependent</span> 
@@ -155,32 +153,89 @@ def model_training():
     <span style="color: red;">1/4</span> distribution.
     """, unsafe_allow_html=True)
 
-
     st.subheader("Our Model is now ready to Run!")
-    button_key = "train_model_button_" + str(np.random.randint(1e6))  # Generate a unique key
-    if st.button("Train Model", key=button_key):
-        lr=LogisticRegression()
-        lr.fit(x_train,y_train)
+    if st.button('Train Logistic Regression Model'):
+        model = LogisticRegression(max_iter=1000)
+        model.fit(x_train, y_train)
 
-        preds_lr_train = lr.predict(x_train)
-        preds_lr_test = lr.predict(x_test)
+        y_train_pred = model.predict(x_train)
+        y_test_pred = model.predict(x_test)
+
+        train_accuracy = accuracy_score(y_train, y_train_pred)
+        test_accuracy = accuracy_score(y_test, y_test_pred)
+
+        train_conf_matrix = confusion_matrix(y_train, y_train_pred)
+        test_conf_matrix = confusion_matrix(y_test, y_test_pred)
+
+        train_class_report = classification_report(y_train, y_train_pred, output_dict=True)
+        test_class_report = classification_report(y_test, y_test_pred, output_dict=True)
+        st.balloons()
+        st.markdown("<h2 style='text-align: center;'>Model ran succefully!</h2>", unsafe_allow_html=True)
+        st.markdown("<h3>Training Accuracy</h3>", unsafe_allow_html=True)
+        st.write(f"<div style='text-align: center; font-size: 24px; color: green;'>{train_accuracy:.2f}</div>", unsafe_allow_html=True)
         
-        st.write("Model Accuracy")
-        model_eval(y_train, preds_lr_train)
+        st.markdown("<h3>Confusion Matrix</h3>", unsafe_allow_html=True)
+        st.write("Training Confusion Matrix:")
+        st.dataframe(pd.DataFrame(train_conf_matrix, index=["Actual 0", "Actual 1"], columns=["Predicted 0", "Predicted 1"]))
 
-        st.write("Test Accuracy")
-        model_eval(y_test, preds_lr_test)
+        st.write("Classification Report:")
+        st.dataframe(pd.DataFrame(train_class_report).transpose())
 
+        st.markdown("<h3>Test Accuracy</h3>", unsafe_allow_html=True)
+        st.write(f"<div style='text-align: center; font-size: 24px; color: green;'>{test_accuracy:.2f}</div>", unsafe_allow_html=True)
 
+        st.markdown("<h3>Confusion Matrix</h3>", unsafe_allow_html=True)
+        st.write("Test Confusion Matrix:")
+        st.dataframe(pd.DataFrame(test_conf_matrix, index=["Actual 0", "Actual 1"], columns=["Predicted 0", "Predicted 1"]))
 
-def model_eval(actual, predicted):
-    acc_score = accuracy_score(actual, predicted)
-    conf_matrix = confusion_matrix(actual, predicted)
-    class_rep = classification_report (actual, predicted)
-    print("Model Accuracy: ", round(acc_score, 2))
-    print(conf_matrix)
-    print(class_rep)
+        st.write("Classification Report:")
+        st.dataframe(pd.DataFrame(test_class_report).transpose())
+    if st.button('Train Decision Tree Model'):
 
+        # Train the model
+        model = DecisionTreeClassifier(random_state=0)
+        model.fit(x_train, y_train)
+
+        # Predictions
+        y_train_pred = model.predict(x_train)
+        y_test_pred = model.predict(x_test)
+
+        # Metrics
+        train_accuracy = accuracy_score(y_train, y_train_pred)
+        test_accuracy = accuracy_score(y_test, y_test_pred)
+
+        train_conf_matrix = confusion_matrix(y_train, y_train_pred)
+        test_conf_matrix = confusion_matrix(y_test, y_test_pred)
+
+        train_class_report = classification_report(y_train, y_train_pred, output_dict=True)
+        test_class_report = classification_report(y_test, y_test_pred, output_dict=True)
+
+        # Display results
+        st.markdown("<h3>Training Accuracy</h3>", unsafe_allow_html=True)
+        st.write(f"<div style='text-align: center; font-size: 24px; color: green;'>{train_accuracy:.2f}</div>", unsafe_allow_html=True)
+
+        st.markdown("<h3>Confusion Matrix</h3>", unsafe_allow_html=True)
+        st.write("Training Confusion Matrix:")
+        st.dataframe(pd.DataFrame(train_conf_matrix, index=["Actual 0", "Actual 1"], columns=["Predicted 0", "Predicted 1"]))
+
+        st.write("Classification Report:")
+        st.dataframe(pd.DataFrame(train_class_report).transpose())
+
+        st.markdown("<h3>Test Accuracy</h3>", unsafe_allow_html=True)
+        st.write(f"<div style='text-align: center; font-size: 24px; color: green;'>{test_accuracy:.2f}</div>", unsafe_allow_html=True)
+
+        st.markdown("<h3>Confusion Matrix</h3>", unsafe_allow_html=True)
+        st.write("Test Confusion Matrix:")
+        st.dataframe(pd.DataFrame(test_conf_matrix, index=["Actual 0", "Actual 1"], columns=["Predicted 0", "Predicted 1"]))
+
+        st.write("Classification Report:")
+        st.dataframe(pd.DataFrame(test_class_report).transpose())
+
+        # Display Decision Tree
+        st.subheader("Decision Tree Visualization")
+        plt.figure(figsize=(15, 10))
+        plot_tree(model, filled=True, feature_names=x_train.columns, class_names=["Not Fraud", "Fraud"])
+        st.pyplot(plt)
 
 # Create a sidebar with navigation options
 st.sidebar.title("Navigation")
