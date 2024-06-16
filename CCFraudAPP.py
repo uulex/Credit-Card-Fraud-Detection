@@ -6,7 +6,7 @@ import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
@@ -154,7 +154,7 @@ def model_training():
     """, unsafe_allow_html=True)
 
     st.subheader("Our Model is now ready to Run!")
-    if st.button('Train Model'):
+    if st.button('Train Logistic Regression Model'):
         model = LogisticRegression(max_iter=1000)
         model.fit(x_train, y_train)
 
@@ -190,7 +190,56 @@ def model_training():
 
         st.write("Classification Report:")
         st.dataframe(pd.DataFrame(test_class_report).transpose())
+    if st.button('Train Decision Tree Model'):
 
+
+        # Train the model
+        model = DecisionTreeClassifier(random_state=0)
+        model.fit(x_train, y_train)
+
+        # Predictions
+        y_train_pred = model.predict(x_train)
+        y_test_pred = model.predict(x_test)
+
+        # Metrics
+        train_accuracy = accuracy_score(y_train, y_train_pred)
+        test_accuracy = accuracy_score(y_test, y_test_pred)
+
+        train_conf_matrix = confusion_matrix(y_train, y_train_pred)
+        test_conf_matrix = confusion_matrix(y_test, y_test_pred)
+
+        train_class_report = classification_report(y_train, y_train_pred, output_dict=True)
+        test_class_report = classification_report(y_test, y_test_pred, output_dict=True)
+
+        st.balloons()
+        st.markdown("<h2 style='text-align: center;'>Model ran succefully!</h2>", unsafe_allow_html=True)
+
+        # Display results
+        st.markdown("<h3>Training Accuracy</h3>", unsafe_allow_html=True)
+        st.write(f"<div style='text-align: center; font-size: 24px; color: green;'>{train_accuracy:.2f}</div>", unsafe_allow_html=True)
+
+        st.markdown("<h3>Confusion Matrix</h3>", unsafe_allow_html=True)
+        st.write("Training Confusion Matrix:")
+        st.dataframe(pd.DataFrame(train_conf_matrix, index=["Actual 0", "Actual 1"], columns=["Predicted 0", "Predicted 1"]))
+
+        st.write("Classification Report:")
+        st.dataframe(pd.DataFrame(train_class_report).transpose())
+
+        st.markdown("<h3>Test Accuracy</h3>", unsafe_allow_html=True)
+        st.write(f"<div style='text-align: center; font-size: 24px; color: green;'>{test_accuracy:.2f}</div>", unsafe_allow_html=True)
+
+        st.markdown("<h3>Confusion Matrix</h3>", unsafe_allow_html=True)
+        st.write("Test Confusion Matrix:")
+        st.dataframe(pd.DataFrame(test_conf_matrix, index=["Actual 0", "Actual 1"], columns=["Predicted 0", "Predicted 1"]))
+
+        st.write("Classification Report:")
+        st.dataframe(pd.DataFrame(test_class_report).transpose())
+
+        # Display Decision Tree
+        st.subheader("Decision Tree Visualization")
+        plt.figure(figsize=(15, 10))
+        plot_tree(model, filled=True, feature_names=x_train.columns, class_names=["Not Fraud", "Fraud"])
+        st.pyplot(plt)
 
 # Create a sidebar with navigation options
 st.sidebar.title("Navigation")
