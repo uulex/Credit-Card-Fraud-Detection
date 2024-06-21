@@ -192,6 +192,7 @@ def model_training():
         st.dataframe(pd.DataFrame(test_class_report).transpose())
     if st.button('Train Decision Tree Model'):
 
+
         # Train the model
         model = DecisionTreeClassifier(random_state=0)
         model.fit(x_train, y_train)
@@ -209,6 +210,9 @@ def model_training():
 
         train_class_report = classification_report(y_train, y_train_pred, output_dict=True)
         test_class_report = classification_report(y_test, y_test_pred, output_dict=True)
+
+        st.balloons()
+        st.markdown("<h2 style='text-align: center;'>Model ran succefully!</h2>", unsafe_allow_html=True)
 
         # Display results
         st.markdown("<h3>Training Accuracy</h3>", unsafe_allow_html=True)
@@ -253,7 +257,7 @@ elif page == "Model Training":
 st.sidebar.markdown(
     """
     <hr style="margin-top: 20px; margin-bottom: 10px;">
-    <p style="font-size: 12px;">An App Created by Jeremi Degenhardt, Frederic von Gahlen, Leo Gfeller, and Alexander Nigg</p>
+    <p style="font-size: 12px;">An App Created by Jeremi Degenhardt, Frederic von Gahlen, Leo Gfeller and Alexander Nigg</p>
     """,
     unsafe_allow_html=True
 )
