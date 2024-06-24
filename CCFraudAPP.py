@@ -123,10 +123,10 @@ def data_exploration():
     st.subheader("Distribution of Class Labels")
     st.markdown("""Our dataset is <span style="color: red;">imbalanced</span> with <span style="color: red;">91.3%</span> non-fraudulent and <span style="color: red;">8.7%</span> fraudulent transactions. We have resampled the dataset to have equal classes.""", unsafe_allow_html=True)
 
-    with st.expander("Show Visual for Fraud/Not-Fraud"):
-        visual = st.selectbox("Select Visual", ["Distribution of Fraud", "Distribution of Class"])
+    with st.expander("Show Visual for Class Distribution"):
+        visual = st.selectbox("Select Visual", ["Distribution of Fraud(original)", "Distribution of Fraud (resampled)", "Distribution of Class"])
     
-        if visual == "Distribution of Fraud":
+        if visual == "Distribution of Fraud(original)":
             class_distribution = data["fraud"].value_counts().reset_index()
             class_distribution.columns = ["Class", "Count"]
             fig = px.pie(class_distribution, values="Count", names="Class", title="Distribution of Fraud", color_discrete_sequence=["lightblue", "red"])
@@ -190,7 +190,7 @@ def model_training():
 
     # Model training and evaluation
     train_and_evaluate_model("Logistic Regression", LogisticRegression(max_iter=1000), x_train, y_train, x_test, y_test, x)
-    train_and_evaluate_model("Decision Tree", neighbors.KNeighborsClassifier(n_neighbors = 3), x_train, y_train, x_test, y_test, x)
+    train_and_evaluate_model("Decision Tree", DecisionTreeClassifier(random_state=5), x_train, y_train, x_test, y_test, x)
     train_and_evaluate_model("Random Forest", RandomForestClassifier(random_state=5), x_train, y_train, x_test, y_test, x)
 
 def train_and_evaluate_model(model_name, model, x_train, y_train, x_test, y_test, x):
