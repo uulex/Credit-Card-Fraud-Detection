@@ -30,17 +30,54 @@ def home():
     st.markdown("""Logistic Regression is a statistical method for binary classification. This means it helps us predict one of two possible outcomes. In our case, that would be the distinction between fraudulent and non-fraudulent transactions. The model makes those decisions based on various factors and features.""", unsafe_allow_html=True)
 
     st.subheader("How does it work?")
-    st.markdown("""<strong>Logistic Function:</strong> While linear regression models predict continuous values, a logistic regression model predicts probabilities. The outputs of the regression model are values between 0 and 1. This makes a logistic regression model perfect for binary classification tasks.""", unsafe_allow_html=True)
+    st.markdown("""<strong>Logistic Function:</strong> While linear regression models predict continuous values, a logistic regression model predicts probabilities. The outputs of the regression model are values between 0 and 1. This makes a logistic regression model suitable for binary classification tasks.""", unsafe_allow_html=True)
     st.markdown("""<strong>Probability to Classes:</strong> After we get this probability as an output we set a threshold (usually 0.5) to classify the probability into two classes. In our instance, that would mean that if the probability that a transaction is fraudulent is greater than 50 percent, it would get flagged.""", unsafe_allow_html=True)
     st.markdown("""<strong>Model training:</strong> During the model's training, it adjusts its parameters to best fit the data. This involves finding the best curve (example of curve below) that separates the two classes by maximizing the likelihood of the observed data. This training takes place in a supervised environment.""", unsafe_allow_html=True)
     with st.expander("Show Logistic Regression Curve"):
         st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Exam_pass_logistic_curve.svg/600px-Exam_pass_logistic_curve.svg.png", caption=None, width=None, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
-    st.subheader("Why are we using Logistic Regression")
-    st.markdown("""<strong>Simplicity:</strong> Logistic regression is simple and easy to implement. It's a good starting point for binary classification problems.""", unsafe_allow_html=True)
-    st.markdown("""<strong>Interpretability:</strong> The model is easy to interpret. The coefficients (parameters) can give insights into how each feature impacts the prediction.""", unsafe_allow_html=True)
-    st.markdown("""<strong>Efficiency:</strong> It is computationally efficient and works well with small to medium-sized datasets.""", unsafe_allow_html=True)
-    st.markdown("""<strong>Performance:</strong> Despite its simplicity, logistic regression often provides good performance and can be a strong baseline for more complex models.""", unsafe_allow_html=True)
+    #st.subheader("Why are we using Logistic Regression")
+    #st.markdown("""<strong>Simplicity:</strong> Logistic regression is simple and easy to implement. It's a good starting point for binary classification problems.""", unsafe_allow_html=True)
+    #st.markdown("""<strong>Interpretability:</strong> The model is easy to interpret. The coefficients (parameters) can give insights into how each feature impacts the prediction.""", unsafe_allow_html=True)
+    #st.markdown("""<strong>Efficiency:</strong> It is computationally efficient and works well with small to medium-sized datasets.""", unsafe_allow_html=True)
+    #st.markdown("""<strong>Performance:</strong> Despite its simplicity, logistic regression often provides good performance and can be a strong baseline for more complex models.""", unsafe_allow_html=True)
+
+    st.title("K Means Clustering")
+
+    st.subheader("What is K-means Clustering")
+    st.markdown("""K-means Clustering is a type of unsupervised learning method used for clustering. This means it helps us group similar data points together based on their features. In our case, that could be grouping customers based on their purchasing behavior. The model makes those decisions based on various factors and features.""", unsafe_allow_html=True)
+
+    st.subheader("How does it work?")
+    st.markdown("""<strong>Initialization:</strong> The algorithm starts by randomly initializing 'k' cluster centers. For our case, we have chosen k = 3, since that gave us the best results. 'k' is a parameter that needs to be specified beforehand.""", unsafe_allow_html=True)
+    st.markdown("""<strong>Assignment:</strong> Each data point is assigned to the nearest cluster center. The distance is usually calculated using Euclidean distance.""", unsafe_allow_html=True)
+    st.markdown("""<strong>Update:</strong> The cluster centers are recalculated as the mean of all data points belonging to that cluster. This process is repeated until the cluster assignments do not change or a maximum number of iterations is reached.""", unsafe_allow_html=True)
+    with st.expander("Show K-means Clustering"):
+        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/K-means_convergence.gif/440px-K-means_convergence.gif", caption=None, width=None, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+
+    #st.subheader("Why are we using K-means Clustering")
+    #st.markdown("""<strong>Simplicity:</strong> K-means is simple and easy to implement. It's a good starting point for clustering problems.""", unsafe_allow_html=True)
+    #st.markdown("""<strong>Efficiency:</strong> It is computationally efficient and works well with large datasets.""", unsafe_allow_html=True)
+    #st.markdown("""<strong>Interpretability:</strong> The model is easy to interpret. The clusters can give insights into how the data is structured.""", unsafe_allow_html=True)
+    #st.markdown("""<strong>Performance:</strong> Despite its simplicity, K-means often provides good performance and can be a strong baseline for more complex models.""", unsafe_allow_html=True)
+
+    st.title("Random Decision Trees")
+
+    st.subheader("What is Random Decision Trees")
+    st.markdown("""Random Decision Trees is a type of supervised learning method used for both regression and classification tasks. This means it helps us predict a continuous value or a categorical class based on various factors and features. In our case, that could be predicting house prices or classifying emails as spam or not spam.""", unsafe_allow_html=True)
+
+    st.subheader("How does it work?")
+    st.markdown("""<strong>Tree Construction:</strong> The algorithm starts by splitting the data based on a feature that provides the best split, according to a mathematical 'impurity' criterion (like Gini impurity or information gain). This process is repeated recursively, resulting in a tree-like model of decisions.""", unsafe_allow_html=True)
+    st.markdown("""<strong>Randomness:</strong> In Random Decision Trees, some randomness is introduced in the selection of the feature to split on, adding extra diversity and robustness to the model.""", unsafe_allow_html=True)
+    st.markdown("""<strong>Ensemble:</strong> Typically, a set of different trees is created (a 'forest'). Each tree gives a prediction, and the final prediction is decided by majority vote (for classification) or averaging (for regression).""", unsafe_allow_html=True)
+    with st.expander("Show Random Decision Trees"):
+        st.image("https://upload.wikimedia.org/wikipedia/commons/4/4e/Random_forest_explain.png", caption=None, width=None, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+
+    #st.subheader("Why are we using Random Decision Trees")
+    #st.markdown("""<strong>Accuracy:</strong> Random Decision Trees usually provide a high accuracy, as they learn complex decision boundaries.""", unsafe_allow_html=True)
+    #st.markdown("""<strong>Robustness:</strong> They are robust to outliers and non-linear data.""", unsafe_allow_html=True)
+    #st.markdown("""<strong>Interpretability:</strong> Each decision in the tree has a clear interpretation, making the model relatively easy to understand.""", unsafe_allow_html=True)
+    #st.markdown("""<strong>Efficiency:</strong> They are computationally efficient and work well with large datasets.""", unsafe_allow_html=True)
+
 
 def data_exploration():
     st.title("Data Exploration")
@@ -48,24 +85,24 @@ def data_exploration():
     st.markdown("""
     The columns of our dataset consist of <span style="color: red;">8 transaction attributes</span> and the <span style="color: red;">Class</span> which determines 
     if a transaction was <span style="color: red;">fraudulent or not</span> (1 = fraudulent; 0 = not fraudulent). 
-    The <span style="color: red;">total number of rows</span> in our dataset is <span style="color: red;">100,000</span>.
+    The <span style="color: red;">total number of rows</span> in our dataset is <span style="color: red;">1000000</span>.
     """, unsafe_allow_html=True)
     with st.expander("Show raw data"):
         st.write(data.shape)
         st.write(data.head())
 
-    if st.checkbox('Show interactive correlation heatmap'):
+    with st.checkbox('Show interactive correlation heatmap'):
         fig = px.imshow(data.corr(), text_auto=True, aspect='auto', color_continuous_scale='viridis')
         st.plotly_chart(fig)
-    else:
-        heatmap = plt.figure(figsize=[20, 10])
-        sns.heatmap(data.corr(), cmap="crest", annot=True)
-        with st.expander("Show correlation heatmap"):
-            st.pyplot(heatmap)
+    #else:
+    #    heatmap = plt.figure(figsize=[20, 10])
+    #    sns.heatmap(data.corr(), cmap="crest", annot=True)
+    #    with st.expander("Show correlation heatmap"):
+    #        st.pyplot(heatmap)
 
-    st.subheader("Feature Correlations with Class")
+    st.subheader("Feature Correlations with Fraud/Not-Fraud")
     st.markdown("""The features <span style="color: red;">distance_from_home</span>, <span style="color: red;">distance_from_last_transaction</span>, <span style="color: red;">ratio_to_median_purchase_price</span> seem to have the <span style="color: red;">highest correlation</span> with our classification column.""", unsafe_allow_html=True)
-    with st.expander("Show Feature Correlations with Class"):
+    with st.expander("Show Feature Correlations with Fraud/Not-Fraud"):
         correlation_matrix = data.corr()
         class_correlation = correlation_matrix['fraud']
         class_correlation_sorted = class_correlation.drop('fraud').sort_values(ascending=False)
@@ -73,7 +110,7 @@ def data_exploration():
         plt.figure(figsize=(10, 6), facecolor='#2e2e2e')
         ax = sns.barplot(x=class_correlation_sorted.values, y=class_correlation_sorted.index, palette='coolwarm')
         
-        plt.title('Feature Correlations with Class', color='white')
+        plt.title('Feature Correlations with Fraud/Not-Fraud', color='white')
         plt.xlabel('Correlation Coefficient', color='white')
         plt.ylabel('Features', color='white')
 
@@ -86,7 +123,7 @@ def data_exploration():
     st.subheader("Distribution of Class Labels")
     st.markdown("""Our dataset is <span style="color: red;">imbalanced</span> with <span style="color: red;">91.3%</span> non-fraudulent and <span style="color: red;">8.7%</span> fraudulent transactions. We have resampled the dataset to have equal classes.""", unsafe_allow_html=True)
 
-    with st.expander("Show Visual for Amount or Class"):
+    with st.expander("Show Visual for Fraud/Not-Fraud"):
         visual = st.selectbox("Select Visual", ["Distribution of Fraud", "Distribution of Class"])
     
         if visual == "Distribution of Fraud":
@@ -95,7 +132,7 @@ def data_exploration():
             fig = px.pie(class_distribution, values="Count", names="Class", title="Distribution of Fraud", color_discrete_sequence=["lightblue", "red"])
             st.plotly_chart(fig)
 
-        elif visual == "Distribution of Class":
+        elif visual == "Distribution of Fraud (resampled)":
             real = data[data["fraud"] == 0]
             fraud = data[data["fraud"] == 1]
 
@@ -120,6 +157,13 @@ def model_training():
     In our preprocessing step, we use standardization to bring all our features to the same scale.
     """)
 
+    real = data[data["fraud"] == 0]
+    fraud = data[data["fraud"] == 1]
+
+    real_resample = real.sample(n=87403, random_state=123)
+    fraud_resample = fraud.sample(n=87403, random_state=123)
+    data_corrected = pd.concat([real_resample, fraud_resample], axis=0)
+
 
     # Check if 'fraud' column exists in the dataset
     if 'fraud' not in data.columns:
@@ -127,28 +171,27 @@ def model_training():
         st.stop()
 
     # Prepare data
-    x = data.drop(['fraud'], axis=1)  # Features
-    y = data['fraud']  # Target variable
+    x = np.array(data_corrected.drop(columns = "fraud"))
+    y = np.array(data_corrected["fraud"])
 
     # Standardize features
-    sc = StandardScaler()
-    x_scaled = sc.fit_transform(x)
-    x_scaled_df = pd.DataFrame(x_scaled, columns=x.columns)
+    # Data scaling to produce good results
+    scale = MinMaxScaler()
+    x_train = scale.fit_transform(x_train)
+    x_test = scale.transform(x_test)
 
     # Split data into training and testing sets
-    x_train, x_test, y_train, y_test = train_test_split(x_scaled_df, y, test_size=0.25, random_state=15)
+    x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, test_size = 0.2, random_state = 123, shuffle = True)
 
     st.subheader("Building our ML-Model")
 
     st.markdown("""
-    We believe logistic regression offers a promising approach for this problem due to its simplicity, interpretability, and efficiency in binary classification tasks.
-    We'll divide our dataset into a training set and a test set with a 3:1 ratio.
-    """)
+    We believe logistic regression offers a promising first approach for this problem due to its simplicity, interpretability, and efficiency in binary classification tasks.""")
 
     # Model training and evaluation
     train_and_evaluate_model("Logistic Regression", LogisticRegression(max_iter=1000), x_train, y_train, x_test, y_test, x)
-    train_and_evaluate_model("Decision Tree", DecisionTreeClassifier(random_state=0), x_train, y_train, x_test, y_test, x)
-    train_and_evaluate_model("Random Forest", RandomForestClassifier(n_estimators=50, random_state=0), x_train, y_train, x_test, y_test, x)
+    train_and_evaluate_model("Decision Tree", neighbors.KNeighborsClassifier(n_neighbors = 3), x_train, y_train, x_test, y_test, x)
+    train_and_evaluate_model("Random Forest", RandomForestClassifier(random_state=5), x_train, y_train, x_test, y_test, x)
 
 def train_and_evaluate_model(model_name, model, x_train, y_train, x_test, y_test, x):
     st.subheader(f"Train {model_name} Model")
@@ -170,7 +213,7 @@ def train_and_evaluate_model(model_name, model, x_train, y_train, x_test, y_test
         test_class_report = classification_report(y_test, y_test_pred, output_dict=True)
 
         # Display evaluation results
-        st.balloons()
+        #st.balloons()
         st.markdown(f"<h2 style='text-align: center;'>{model_name} Model Evaluation</h2>", unsafe_allow_html=True)
 
         st.markdown("<h3>Training Accuracy</h3>", unsafe_allow_html=True)
