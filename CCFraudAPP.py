@@ -124,7 +124,7 @@ def data_exploration():
     st.markdown("""Our dataset is <span style="color: red;">imbalanced</span> with <span style="color: red;">91.3%</span> non-fraudulent and <span style="color: red;">8.7%</span> fraudulent transactions. We have resampled the dataset to have equal classes.""", unsafe_allow_html=True)
 
     with st.expander("Show Visual for Class Distribution"):
-        visual = st.selectbox("Select Visual", ["Distribution of Fraud(original)", "Distribution of Fraud (resampled)", "Distribution of Class"])
+        visual = st.selectbox("Select Visual", ["Distribution of Fraud(original)", "Distribution of Fraud (resampled)"])
     
         if visual == "Distribution of Fraud(original)":
             class_distribution = data["fraud"].value_counts().reset_index()
