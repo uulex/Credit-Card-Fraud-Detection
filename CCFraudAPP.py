@@ -91,14 +91,14 @@ def data_exploration():
         st.write(data.shape)
         st.write(data.head())
 
-    with st.checkbox('Show interactive correlation heatmap'):
+    if st.checkbox('Show interactive correlation heatmap'):
         fig = px.imshow(data.corr(), text_auto=True, aspect='auto', color_continuous_scale='viridis')
         st.plotly_chart(fig)
-    #else:
-    #    heatmap = plt.figure(figsize=[20, 10])
-    #    sns.heatmap(data.corr(), cmap="crest", annot=True)
-    #    with st.expander("Show correlation heatmap"):
-    #        st.pyplot(heatmap)
+    else:
+        heatmap = plt.figure(figsize=[20, 10])
+        sns.heatmap(data.corr(), cmap="crest", annot=True)
+        with st.expander("Show correlation heatmap"):
+            st.pyplot(heatmap)
 
     st.subheader("Feature Correlations with Fraud/Not-Fraud")
     st.markdown("""The features <span style="color: red;">distance_from_home</span>, <span style="color: red;">distance_from_last_transaction</span>, <span style="color: red;">ratio_to_median_purchase_price</span> seem to have the <span style="color: red;">highest correlation</span> with our classification column.""", unsafe_allow_html=True)
