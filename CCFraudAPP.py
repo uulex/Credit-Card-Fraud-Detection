@@ -71,7 +71,7 @@ def home():
     st.markdown("""<strong>Tree Construction:</strong> The algorithm starts by splitting the data based on a feature that provides the best split, according to a mathematical 'impurity' criterion (like Gini impurity or information gain). This process is repeated recursively, resulting in a tree-like model of decisions.""", unsafe_allow_html=True)
     st.markdown("""<strong>Randomness:</strong> In Random Forests, some randomness is introduced in the selection of the feature to split on, adding extra diversity and robustness to the model.""", unsafe_allow_html=True)
     st.markdown("""<strong>Ensemble:</strong> Typically, a set of different trees is created (a 'forest'). Each tree gives a prediction, and the final prediction is decided by majority vote (for classification) or averaging (for regression).""", unsafe_allow_html=True)
-    with st.expander("Show Random Decision Trees"):
+    with st.expander("Show Random Forest"):
         st.image("https://upload.wikimedia.org/wikipedia/commons/4/4e/Random_forest_explain.png", caption=None, width=None, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
     #st.subheader("Why are we using Random Decision Trees")
