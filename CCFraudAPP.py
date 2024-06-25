@@ -319,7 +319,7 @@ def model_training():
 
 def fraud_detector():
     st.header("Fraud Detector")
-    st.markdown("""Here you can use our <span style="color: red;">fraud detection tool</span> to check if a transaction was fraudulent or not. Just input the transaction information acording to our form and our <span style="color: red;">k-Means-Clustering</span>-Model will do the rest! """, unsafe_allow_html=True)
+    st.markdown("""Here you can use our <span style="color: red;">fraud detection tool</span> to check if a transaction was fraudulent or not. Just input the transaction information acording to our form and our <span style="color: red;">Random Forest Model</span>-Model will do the rest! """, unsafe_allow_html=True)
 
     # Create form for user input
     with st.form(key='fraud_detection_form'):
