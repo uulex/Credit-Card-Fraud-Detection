@@ -12,6 +12,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 import plotly.express as px
+from PIL import Image, ImageDraw, ImageFont
 
 # Load the new dataset
 data = pd.read_csv("card_transdata.csv")
@@ -90,15 +91,11 @@ def data_exploration():
     with st.expander("Show raw data"):
         st.write(data.shape)
         st.write(data.head())
+    
+    with st.expander("Show correlation heatmap"):
+          fig = px.imshow(data.corr(), text_auto=True, aspect='auto', color_continuous_scale='viridis')
+          st.plotly_chart(fig)
 
-    if st.checkbox('Show interactive correlation heatmap'):
-        fig = px.imshow(data.corr(), text_auto=True, aspect='auto', color_continuous_scale='viridis')
-        st.plotly_chart(fig)
-    else:
-        heatmap = plt.figure(figsize=[20, 10])
-        sns.heatmap(data.corr(), cmap="crest", annot=True)
-        with st.expander("Show correlation heatmap"):
-            st.pyplot(heatmap)
 
     st.subheader("Feature Correlations with Fraud/Not-Fraud")
     st.markdown("""The features <span style="color: red;">distance_from_home</span>, <span style="color: red;">distance_from_last_transaction</span>, <span style="color: red;">ratio_to_median_purchase_price</span> seem to have the <span style="color: red;">highest correlation</span> with our classification column.""", unsafe_allow_html=True)
@@ -146,127 +143,164 @@ def data_exploration():
             st.plotly_chart(fig)
 
 def model_training():
-    st.title("Model Training")
+    st.header("Model Training")
+    st.subheader("Data Preparation")
+    st.markdown("""Before we start training and testing our three ML-Models we first need to prepare our data. If you looked at our Data Exploration site you probably saw that our classifying feature <span style="color: red;">fraudulent/not fraudulent</span> is <span style="color: red;">not balanced</span> out of the box, so we had to <span style="color: red;">resample</span> the dataset to <span style="color: red;">equalize this feature</span>. Since the majortiy of the transactions in our dataset are flagged as not fraudulent we had to remove a lot of those entries to balance it.""", unsafe_allow_html=True)
+    
+    # Create an image with a matching dark background
+    img_width, img_height = 800, 300
+    page_bg_color = (11, 12, 16)  # Match this to the dark theme background color
+    img = Image.new('RGB', (img_width, img_height), color=page_bg_color)
+    draw = ImageDraw.Draw(img)
 
-    st.subheader("Data Preparation and Preprocessing")
-    st.markdown("""
-    To start the process of training our ML-Model, we need to prepare our dataset. 
-    First, we divide our dataset into dependent and independent features. 
-    In our dataset, the feature "fraud" (fraudulent/non-fraudulent) is what we want our 
-    model to predict; thus, it is our dependent feature. 
-    In our preprocessing step, we use standardization to bring all our features to the same scale.
-    """)
+    # Define text properties
+    try:
+        font = ImageFont.truetype("DejaVuSans-Bold.ttf", size=28)
+    except IOError:
+        font = ImageFont.load_default(size = 24)
 
-    real = data[data["fraud"] == 0]
-    fraud = data[data["fraud"] == 1]
+    # Draw rectangles and text for "Before" and "After"
+    draw.rectangle([50, 100, 250, 200], outline="white", width=4)
+    draw.rectangle([550, 100, 750, 200], outline="white", width=4)
 
-    real_resample = real.sample(n=87403, random_state=123)
-    fraud_resample = fraud.sample(n=87403, random_state=123)
-    data_corrected = pd.concat([real_resample, fraud_resample], axis=0)
+    # Center text within the rectangles
+    before_text = "Before"
+    before_rows_text = "1,000,000 rows"
+    after_text = "After"
+    after_rows_text = "174,806 rows"
 
+    # Calculate text widths and positions to center them using textbbox
+    before_text_bbox = draw.textbbox((0, 0), before_text, font=font)
+    before_text_width = before_text_bbox[2] - before_text_bbox[0]
+    before_rows_text_bbox = draw.textbbox((0, 0), before_rows_text, font=font)
+    before_rows_text_width = before_rows_text_bbox[2] - before_rows_text_bbox[0]
+    
+    after_text_bbox = draw.textbbox((0, 0), after_text, font=font)
+    after_text_width = after_text_bbox[2] - after_text_bbox[0]
+    after_rows_text_bbox = draw.textbbox((0, 0), after_rows_text, font=font)
+    after_rows_text_width = after_rows_text_bbox[2] - after_rows_text_bbox[0]
 
-    # Check if 'fraud' column exists in the dataset
-    if 'fraud' not in data.columns:
-        st.error("Error: 'fraud' column not found in the dataset. Please ensure the target variable is correctly labeled.")
-        st.stop()
+    draw.text(((250 - before_text_width) / 2 + 25, 110), before_text, fill="white", font=font)
+    draw.text(((250 - before_rows_text_width) / 2 + 25, 150), before_rows_text, fill="white", font=font)
 
-    # Prepare data
-    x = np.array(data_corrected.drop(columns = "fraud"))
-    y = np.array(data_corrected["fraud"])
+    draw.text(((200 - after_text_width) / 2 + 550, 110), after_text, fill="white", font=font)
+    draw.text(((200 - after_rows_text_width) / 2 + 550, 150), after_rows_text, fill="white", font=font)
 
-    # Standardize features
-    # Data scaling to produce good results
-    scale = MinMaxScaler()
-    x_train = scale.fit_transform(x_train)
-    x_test = scale.transform(x_test)
-
-    # Split data into training and testing sets
-    x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, test_size = 0.2, random_state = 123, shuffle = True)
-
-    st.subheader("Building our ML-Model")
-
-    st.markdown("""
-    We believe logistic regression offers a promising first approach for this problem due to its simplicity, interpretability, and efficiency in binary classification tasks.""")
-
-    # Model training and evaluation
-    train_and_evaluate_model("Logistic Regression", LogisticRegression(max_iter=1000), x_train, y_train, x_test, y_test, x)
-    train_and_evaluate_model("Decision Tree", DecisionTreeClassifier(random_state=5), x_train, y_train, x_test, y_test, x)
-    train_and_evaluate_model("Random Forest", RandomForestClassifier(random_state=5), x_train, y_train, x_test, y_test, x)
-
-def train_and_evaluate_model(model_name, model, x_train, y_train, x_test, y_test, x):
-    st.subheader(f"Train {model_name} Model")
-    if st.button(f'Train {model_name} Model'):
-        model.fit(x_train, y_train)
-
-        # Predictions
-        y_train_pred = model.predict(x_train)
-        y_test_pred = model.predict(x_test)
-
-        # Evaluation metrics
-        train_accuracy = accuracy_score(y_train, y_train_pred)
-        test_accuracy = accuracy_score(y_test, y_test_pred)
-
-        train_conf_matrix = confusion_matrix(y_train, y_train_pred)
-        test_conf_matrix = confusion_matrix(y_test, y_test_pred)
-
-        train_class_report = classification_report(y_train, y_train_pred, output_dict=True)
-        test_class_report = classification_report(y_test, y_test_pred, output_dict=True)
-
-        # Display evaluation results
-        #st.balloons()
-        st.markdown(f"<h2 style='text-align: center;'>{model_name} Model Evaluation</h2>", unsafe_allow_html=True)
-
-        st.markdown("<h3>Training Accuracy</h3>", unsafe_allow_html=True)
-        st.write(f"<div style='text-align: center; font-size: 24px; color: green;'>{train_accuracy:.2f}</div>", unsafe_allow_html=True)
-
-        st.markdown("<h3>Confusion Matrix</h3>", unsafe_allow_html=True)
-        st.write("Training Confusion Matrix:")
-        st.dataframe(pd.DataFrame(train_conf_matrix, index=["Actual 0", "Actual 1"], columns=["Predicted 0", "Predicted 1"]))
-
-        st.write("Classification Report:")
-        st.dataframe(pd.DataFrame(train_class_report).transpose())
-
-        st.markdown("<h3>Test Accuracy</h3>", unsafe_allow_html=True)
-        st.write(f"<div style='text-align: center; font-size: 24px; color: green;'>{test_accuracy:.2f}</div>", unsafe_allow_html=True)
-
-        st.markdown("<h3>Confusion Matrix</h3>", unsafe_allow_html=True)
-        st.write("Test Confusion Matrix:")
-        st.dataframe(pd.DataFrame(test_conf_matrix, index=["Actual 0", "Actual 1"], columns=["Predicted 0", "Predicted 1"]))
-
-        st.write("Classification Report:")
-        st.dataframe(pd.DataFrame(test_class_report).transpose())
-
-        # Visualizations
-        if model_name in ["Logistic Regression", "Decision Tree"]:
-            st.markdown(f"<h3>{model_name} Model Visualization</h3>", unsafe_allow_html=True)
-
-        # ROC Curve and AUC
-        if model_name == "Logistic Regression":
-            from sklearn.metrics import roc_curve, auc
-
-            # Calculate ROC curve and AUC for Logistic Regression
-            fpr, tpr, thresholds = roc_curve(y_test, model.predict_proba(x_test)[:, 1])
-            roc_auc = auc(fpr, tpr)
-
-            # Plot ROC curve
-            fig_roc, ax_roc = plt.subplots()
-            ax_roc.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc:.2f})')
-            ax_roc.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
-            ax_roc.set_xlim([0.0, 1.0])
-            ax_roc.set_ylim([0.0, 1.05])
-            ax_roc.set_xlabel('False Positive Rate')
-            ax_roc.set_ylabel('True Positive Rate')
-            ax_roc.set_title(f'ROC Curve - {model_name}')
-            ax_roc.legend(loc="lower right")
-            st.pyplot(fig_roc)
-
-        if model_name == "Decision Tree":
-            st.subheader(f"{model_name} Visualization")
-            plt.figure(figsize=(15, 10))
-            plot_tree(model, filled=True, feature_names=x_train.columns, class_names=["Not Fraud", "Fraud"])
-            st.pyplot(plt)
+    # Draw an arrow with the text "Resampling" in the middle
+    arrow_text = "Resampling"
+    arrow_text_bbox = draw.textbbox((0, 0), arrow_text, font=font)
+    arrow_text_width = arrow_text_bbox[2] - arrow_text_bbox[0]
+    draw.line([300, 150, 500, 150], fill="white", width=3)
+    draw.polygon([490, 140, 510, 150, 490, 160], fill="white")  # Arrowhead
+    draw.text(((img_width - arrow_text_width) / 2, 110), arrow_text, fill="white", font=font)
 
     
+    st.image(img, caption='Dataset Size Before and After Resampling')
+
+    st.markdown("""We are now left with about <span style="color: red;">17.5% of the rows in our dataset</span>, which should still be enough to get well-trained ML-Models. Now that our dataset is balanced we will <span style="color: red;">seperate dependent</span> and <span style="color: red;">independet features</span>, which in our case means <span style="color: red;">droping the classifier</span> and saving it in a <span style="color: red;">seperate array</span>.""", unsafe_allow_html=True)
+    st.markdown("""The last step before we can finally start training our models is to <span style="color: red;">seperate</span> our data into <span style="color: red;">training- and testing-data</span>. We decided to go for a <span style="color: red;">80% training</span> and <span style="color: red;">20% testing</span> split.""", unsafe_allow_html=True)
+
+    st.subheader("Logistic Regression")
+    st.markdown("""Logistic Regression is a <span style="color: red;">supervised machine learning algorithm</span> used for <span style="color: red;">binary classification</span>. It is well suited for <span style="color: red;">predictive modeling</span>.""", unsafe_allow_html=True)
+    st.markdown("""**Let's see how it performs:**""", unsafe_allow_html=True)
+
+
+
+    # Data
+    data = {
+        "Class": ["0.0", "1.0", "accuracy", "macro avg", "weighted avg"],
+        "Precision": [0.93, 0.91, "", 0.92, 0.92],
+        "Recall": [0.90, 0.93, "", 0.92, 0.92],
+        "F1-Score": [0.92, 0.92, 0.92, 0.92, 0.92],
+        "Support": [17502, 17460, 34962, 34962, 34962]
+    }
+
+    # Create DataFrame
+    df = pd.DataFrame(data)
+
+    # Style the DataFrame
+    styled_df = df.style.set_table_styles(
+        [
+            {'selector': 'thead th', 'props': [('background-color', '#4f4f4f'), ('color', 'white'), ('font-size', '14px')]},
+            {'selector': 'tbody td', 'props': [('background-color', '#f9f9f9'), ('color', '#000000'), ('font-size', '14px')]},
+            {'selector': 'th.col_heading.level0', 'props': [('display', 'none')]},  # Hide left column header
+            {'selector': 'td.col0', 'props': [('display', 'none')]},  # Hide left column cells
+            {'selector': 'thead', 'props': [('border-bottom', '2px solid #4f4f4f')]},
+            {'selector': 'tbody tr', 'props': [('border-bottom', '1px solid #dddddd')]},
+        ]
+    ).set_caption("LR Classification Report")
+
+    # Streamlit app
+    st.write("**LR Accuracy:** 0.9171100051484469")  # Bold text for LR Accuracy
+
+    # Display styled DataFrame without left column
+    st.dataframe(styled_df, height=200, width=700)
+
+    st.subheader("K-Means-Clustering")
+    st.markdown("""K-Means-Clustering is a <span style="color: red;">unsupervised machine learning algorithm</span> and is used for clustering. It analyzes the realationship between different features and <span style="color: red;">groups similar datapoints</span>. It is good for <span style="color: red;">explorative data analysis and pattern recognition</span>.""", unsafe_allow_html=True)
+    st.markdown("""**Let's see how it performs:**""", unsafe_allow_html=True)
+
+    data = {
+    "Class": ["0.0", "1.0", "accuracy", "macro avg", "weighted avg"],
+    "Precision": [1.00, 1.00, "", 1.00, 1.00],
+    "Recall": [1.00, 1.00, "", 1.00, 1.00],
+    "F1-Score": [1.00, 1.00, 1.00, 1.00, 1.00],
+    "Support": [17502, 17460, 34962, 34962, 34962]
+    }
+
+    # Create DataFrame
+    df = pd.DataFrame(data)
+
+    # Style the DataFrame
+    styled_df = df.style.set_table_styles(
+        [
+            {'selector': 'thead th', 'props': [('background-color', '#4f4f4f'), ('color', 'white'), ('font-size', '14px')]},
+            {'selector': 'tbody td', 'props': [('background-color', '#f9f9f9'), ('color', '#000000'), ('font-size', '14px')]},
+            {'selector': 'th.col_heading.level0', 'props': [('display', 'none')]},
+            {'selector': 'thead', 'props': [('border-bottom', '2px solid #4f4f4f')]},
+            {'selector': 'tbody tr', 'props': [('border-bottom', '1px solid #dddddd')]},
+        ]
+    ).set_caption("KNN Classification Report")
+
+    # Streamlit app
+    st.write("**KNN Accuracy:** 0.9971969566958412")  # Display KNN Accuracy in subheader style
+
+    # Display styled DataFrame
+    st.dataframe(styled_df, height=200, width=700)
+
+
+    st.subheader("Random Forest")
+    st.markdown("""Random Forest is a <span style="color: red;">supervised machine learning algorithm</span> and is used for <span style="color: red;">classification and regression</span>. It constructs <span style="color: red;">multiple decision trees</span> and <span style="color: red;">aggregates their results</span>. It is good for <span style="color: red;">handling overfitting</span> and <span style="color: red;">improving prediction accuracy</span>.""", unsafe_allow_html=True)
+    st.markdown("""**Let's see how it performs:**""", unsafe_allow_html=True)
+
+    data = {
+    "Class": ["0.0", "1.0", "accuracy", "macro avg", "weighted avg"],
+    "Precision": [1.00, 1.00, "", 1.00, 1.00],
+    "Recall": [1.00, 1.00, "", 1.00, 1.00],
+    "F1-Score": [1.00, 1.00, 1.00, 1.00, 1.00],
+    "Support": [17502, 17460, 34962, 34962, 34962]
+    }
+
+    # Create DataFrame
+    df = pd.DataFrame(data)
+
+    # Style the DataFrame
+    styled_df = df.style.set_table_styles(
+        [
+            {'selector': 'thead th', 'props': [('background-color', '#4f4f4f'), ('color', 'white'), ('font-size', '14px')]},
+            {'selector': 'tbody td', 'props': [('background-color', '#f9f9f9'), ('color', '#000000'), ('font-size', '14px')]},
+            {'selector': 'th.col_heading.level0', 'props': [('display', 'none')]},
+            {'selector': 'thead', 'props': [('border-bottom', '2px solid #4f4f4f')]},
+            {'selector': 'tbody tr', 'props': [('border-bottom', '1px solid #dddddd')]},
+        ]
+    ).set_caption("RF Classification Report")  # Adjusted caption for RF
+
+    # Streamlit app
+    st.write("**RF Accuracy:** 0.999942795034609")  # Display RF Accuracy in subheader style
+
+    # Display styled DataFrame
+    st.dataframe(styled_df, height=200, width=700)
+
 
 def fraud_detector():
     st.header("Fraud Detector")
