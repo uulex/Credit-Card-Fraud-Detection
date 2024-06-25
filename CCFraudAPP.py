@@ -21,10 +21,11 @@ def home():
     st.title("Credit Card Fraud Detection")
     st.subheader("Goal of the Project")
     st.write("Our team took on the task to develop a ML-model which given certain parameters of a credit card transaction could determine whether a transaction was fraudulent or not.")
-
+    
     st.subheader("Motivation")
-    st.markdown("""According to the 2023 credit card fraud report released by Security.org, that <span style="color: red;">65%</span> of <span style="color: red;">U.S adults</span> have at least once experienced a fraudulent transaction on their credit card. While <span style="color: red;">credit card fraud</span> numbers are <span style="color: red;">steady to rising in the U.S.</span>, the European Central Bank released statistics that show a <span style="color: red;">decline in credit card fraud in Europe</span>. Even though those are good news for Europeans, the issue of credit card fraud is not going away any time soon. Credit card companies and criminals are in a rat race, where both become more sophisticated in either preventing or conducting credit card fraud. That is why <span style="color: red;">ML-Models</span> are becoming an immensely important tool to <span style="color: red;">recognize and flag fraudulent credit card transactions</span> as reliably and quickly as possible.""", unsafe_allow_html=True)
+    st.markdown("""According to the 2023 credit card fraud report released by Security.org, that <span style="color: red;">60%</span> of <span style="color: red;">U.S credit card holders</span> have at least once experienced a fraudulent transaction on their credit card. And <span style="color: red;">credit card fraud</span> numbers are <span style="color: red;">rapidly rising in the U.S.</span>. That's why the issue of credit card fraud is getting more and more important. Credit card companies and criminals are in a rat race, where both become more sophisticated in either preventing or conducting credit card fraud. That is why <span style="color: red;">ML-Models</span> are becoming an immensely important tool to <span style="color: red;">recognize and flag fraudulent credit card transactions</span> as reliably and quickly as possible.""", unsafe_allow_html=True)
 
+    st.write("We want to give you a quick overview over the three models we used to predict credit card fraud before jumping into our dataset.")
     st.title("Logistic Regression")
     
     st.subheader("What is Logistic Regression")
@@ -61,14 +62,14 @@ def home():
     #st.markdown("""<strong>Interpretability:</strong> The model is easy to interpret. The clusters can give insights into how the data is structured.""", unsafe_allow_html=True)
     #st.markdown("""<strong>Performance:</strong> Despite its simplicity, K-means often provides good performance and can be a strong baseline for more complex models.""", unsafe_allow_html=True)
 
-    st.title("Random Decision Trees")
+    st.title("Random Forest")
 
-    st.subheader("What is Random Decision Trees")
-    st.markdown("""Random Decision Trees is a type of supervised learning method used for both regression and classification tasks. This means it helps us predict a continuous value or a categorical class based on various factors and features. In our case, that could be predicting house prices or classifying emails as spam or not spam.""", unsafe_allow_html=True)
+    st.subheader("What is Random Forest")
+    st.markdown("""Random Forest is a type of supervised learning method used for both regression and classification tasks. This means it helps us predict a continuous value or a categorical class based on various factors and features.""", unsafe_allow_html=True)
 
     st.subheader("How does it work?")
     st.markdown("""<strong>Tree Construction:</strong> The algorithm starts by splitting the data based on a feature that provides the best split, according to a mathematical 'impurity' criterion (like Gini impurity or information gain). This process is repeated recursively, resulting in a tree-like model of decisions.""", unsafe_allow_html=True)
-    st.markdown("""<strong>Randomness:</strong> In Random Decision Trees, some randomness is introduced in the selection of the feature to split on, adding extra diversity and robustness to the model.""", unsafe_allow_html=True)
+    st.markdown("""<strong>Randomness:</strong> In Random Forests, some randomness is introduced in the selection of the feature to split on, adding extra diversity and robustness to the model.""", unsafe_allow_html=True)
     st.markdown("""<strong>Ensemble:</strong> Typically, a set of different trees is created (a 'forest'). Each tree gives a prediction, and the final prediction is decided by majority vote (for classification) or averaging (for regression).""", unsafe_allow_html=True)
     with st.expander("Show Random Decision Trees"):
         st.image("https://upload.wikimedia.org/wikipedia/commons/4/4e/Random_forest_explain.png", caption=None, width=None, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
@@ -147,58 +148,60 @@ def model_training():
     st.subheader("Data Preparation")
     st.markdown("""Before we start training and testing our three ML-Models we first need to prepare our data. If you looked at our Data Exploration site you probably saw that our classifying feature <span style="color: red;">fraudulent/not fraudulent</span> is <span style="color: red;">not balanced</span> out of the box, so we had to <span style="color: red;">resample</span> the dataset to <span style="color: red;">equalize this feature</span>. Since the majortiy of the transactions in our dataset are flagged as not fraudulent we had to remove a lot of those entries to balance it.""", unsafe_allow_html=True)
     
-    # Create an image with a matching dark background
-    img_width, img_height = 800, 300
-    page_bg_color = (11, 12, 16)  # Match this to the dark theme background color
-    img = Image.new('RGB', (img_width, img_height), color=page_bg_color)
-    draw = ImageDraw.Draw(img)
+    # # Create an image with a matching dark background
+    # img_width, img_height = 800, 300
+    # page_bg_color = (11, 12, 16)  # Match this to the dark theme background color
+    # img = Image.new('RGB', (img_width, img_height), color=page_bg_color)
+    # draw = ImageDraw.Draw(img)
 
-    # Define text properties
-    try:
-        font = ImageFont.truetype("DejaVuSans-Bold.ttf", size=28)
-    except IOError:
-        font = ImageFont.load_default(size = 24)
+    # # Define text properties
+    # try:
+    #     font = ImageFont.truetype("DejaVuSans-Bold.ttf", size=28)
+    # except IOError:
+    #     font = ImageFont.load_default(size = 24)
 
-    # Draw rectangles and text for "Before" and "After"
-    draw.rectangle([50, 100, 250, 200], outline="white", width=4)
-    draw.rectangle([550, 100, 750, 200], outline="white", width=4)
+    # # Draw rectangles and text for "Before" and "After"
+    # draw.rectangle([50, 100, 250, 200], outline="white", width=4)
+    # draw.rectangle([550, 100, 750, 200], outline="white", width=4)
 
-    # Center text within the rectangles
-    before_text = "Before"
-    before_rows_text = "1,000,000 rows"
-    after_text = "After"
-    after_rows_text = "174,806 rows"
+    # # Center text within the rectangles
+    # before_text = "Before"
+    # before_rows_text = "1,000,000 rows"
+    # after_text = "After"
+    # after_rows_text = "174,806 rows"
 
-    # Calculate text widths and positions to center them using textbbox
-    before_text_bbox = draw.textbbox((0, 0), before_text, font=font)
-    before_text_width = before_text_bbox[2] - before_text_bbox[0]
-    before_rows_text_bbox = draw.textbbox((0, 0), before_rows_text, font=font)
-    before_rows_text_width = before_rows_text_bbox[2] - before_rows_text_bbox[0]
+    # # Calculate text widths and positions to center them using textbbox
+    # before_text_bbox = draw.textbbox((0, 0), before_text, font=font)
+    # before_text_width = before_text_bbox[2] - before_text_bbox[0]
+    # before_rows_text_bbox = draw.textbbox((0, 0), before_rows_text, font=font)
+    # before_rows_text_width = before_rows_text_bbox[2] - before_rows_text_bbox[0]
     
-    after_text_bbox = draw.textbbox((0, 0), after_text, font=font)
-    after_text_width = after_text_bbox[2] - after_text_bbox[0]
-    after_rows_text_bbox = draw.textbbox((0, 0), after_rows_text, font=font)
-    after_rows_text_width = after_rows_text_bbox[2] - after_rows_text_bbox[0]
+    # after_text_bbox = draw.textbbox((0, 0), after_text, font=font)
+    # after_text_width = after_text_bbox[2] - after_text_bbox[0]
+    # after_rows_text_bbox = draw.textbbox((0, 0), after_rows_text, font=font)
+    # after_rows_text_width = after_rows_text_bbox[2] - after_rows_text_bbox[0]
 
-    draw.text(((250 - before_text_width) / 2 + 25, 110), before_text, fill="white", font=font)
-    draw.text(((250 - before_rows_text_width) / 2 + 25, 150), before_rows_text, fill="white", font=font)
+    # draw.text(((250 - before_text_width) / 2 + 25, 110), before_text, fill="white", font=font)
+    # draw.text(((250 - before_rows_text_width) / 2 + 25, 150), before_rows_text, fill="white", font=font)
 
-    draw.text(((200 - after_text_width) / 2 + 550, 110), after_text, fill="white", font=font)
-    draw.text(((200 - after_rows_text_width) / 2 + 550, 150), after_rows_text, fill="white", font=font)
+    # draw.text(((200 - after_text_width) / 2 + 550, 110), after_text, fill="white", font=font)
+    # draw.text(((200 - after_rows_text_width) / 2 + 550, 150), after_rows_text, fill="white", font=font)
 
-    # Draw an arrow with the text "Resampling" in the middle
-    arrow_text = "Resampling"
-    arrow_text_bbox = draw.textbbox((0, 0), arrow_text, font=font)
-    arrow_text_width = arrow_text_bbox[2] - arrow_text_bbox[0]
-    draw.line([300, 150, 500, 150], fill="white", width=3)
-    draw.polygon([490, 140, 510, 150, 490, 160], fill="white")  # Arrowhead
-    draw.text(((img_width - arrow_text_width) / 2, 110), arrow_text, fill="white", font=font)
+    # # Draw an arrow with the text "Resampling" in the middle
+    # arrow_text = "Resampling"
+    # arrow_text_bbox = draw.textbbox((0, 0), arrow_text, font=font)
+    # arrow_text_width = arrow_text_bbox[2] - arrow_text_bbox[0]
+    # draw.line([300, 150, 500, 150], fill="white", width=3)
+    # draw.polygon([490, 140, 510, 150, 490, 160], fill="white")  # Arrowhead
+    # draw.text(((img_width - arrow_text_width) / 2, 110), arrow_text, fill="white", font=font)
 
     
-    st.image(img, caption='Dataset Size Before and After Resampling')
+    # st.image(img, caption='Dataset Size Before and After Resampling')
+
+    #st.image("pictures/LR_Matrix.png", caption=None, width=None, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
     st.markdown("""We are now left with about <span style="color: red;">17.5% of the rows in our dataset</span>, which should still be enough to get well-trained ML-Models. Now that our dataset is balanced we will <span style="color: red;">seperate dependent</span> and <span style="color: red;">independet features</span>, which in our case means <span style="color: red;">droping the classifier</span> and saving it in a <span style="color: red;">seperate array</span>.""", unsafe_allow_html=True)
-    st.markdown("""The last step before we can finally start training our models is to <span style="color: red;">seperate</span> our data into <span style="color: red;">training- and testing-data</span>. We decided to go for a <span style="color: red;">80% training</span> and <span style="color: red;">20% testing</span> split.""", unsafe_allow_html=True)
+    st.markdown("""The last step before we can finally start training our models is to <span style="color: red;">seperate</span> our data into <span style="color: red;">training- and testing-data</span>. We decided to go for a <span style="color: red;">75% training</span> and <span style="color: red;">25% testing</span> split.""", unsafe_allow_html=True)
 
     st.subheader("Logistic Regression")
     st.markdown("""Logistic Regression is a <span style="color: red;">supervised machine learning algorithm</span> used for <span style="color: red;">binary classification</span>. It is well suited for <span style="color: red;">predictive modeling</span>.""", unsafe_allow_html=True)
@@ -208,11 +211,11 @@ def model_training():
 
     # Data
     data = {
-        "Class": ["0.0", "1.0", "accuracy", "macro avg", "weighted avg"],
-        "Precision": [0.93, 0.91, "", 0.92, 0.92],
-        "Recall": [0.90, 0.93, "", 0.92, 0.92],
-        "F1-Score": [0.92, 0.92, 0.92, 0.92, 0.92],
-        "Support": [17502, 17460, 34962, 34962, 34962]
+        "Class": ["0.0", "1.0", "macro avg", "weighted avg"],
+        "Precision": [0.93, 0.91, 0.92, 0.92],
+        "Recall": [0.90, 0.93, 0.92, 0.92],
+        "F1-Score": [0.92, 0.92, 0.92, 0.92],
+        "Support": [17502, 17460, 34962, 34962]
     }
 
     # Create DataFrame
@@ -231,7 +234,10 @@ def model_training():
     ).set_caption("LR Classification Report")
 
     # Streamlit app
-    st.write("**LR Accuracy:** 0.9171100051484469")  # Bold text for LR Accuracy
+    st.write("**LR Accuracy:** 0.9194531048883041")  # Bold text for LR Accuracy
+    st.write("**LR Validation Accuracy:** 0.9171100051484469")  # Bold text for LR Accuracy
+
+    st.image("pictures/LR_Matrix.png", caption=None, width=None, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
     # Display styled DataFrame without left column
     st.dataframe(styled_df, height=200, width=700)
@@ -241,11 +247,11 @@ def model_training():
     st.markdown("""**Let's see how it performs:**""", unsafe_allow_html=True)
 
     data = {
-    "Class": ["0.0", "1.0", "accuracy", "macro avg", "weighted avg"],
-    "Precision": [1.00, 1.00, "", 1.00, 1.00],
-    "Recall": [1.00, 1.00, "", 1.00, 1.00],
-    "F1-Score": [1.00, 1.00, 1.00, 1.00, 1.00],
-    "Support": [17502, 17460, 34962, 34962, 34962]
+    "Class": ["0.0", "1.0", "macro avg", "weighted avg"],
+    "Precision": [1.00, 1.00, 1.00, 1.00],
+    "Recall": [1.00, 1.00, 1.00, 1.00],
+    "F1-Score": [1.00, 1.00, 1.00, 1.00],
+    "Support": [17502, 17460, 34962, 34962]
     }
 
     # Create DataFrame
@@ -263,7 +269,12 @@ def model_training():
     ).set_caption("KNN Classification Report")
 
     # Streamlit app
-    st.write("**KNN Accuracy:** 0.9971969566958412")  # Display KNN Accuracy in subheader style
+    st.write("**KNN Accuracy:** 0.998498326706902")  # Display KNN Accuracy in subheader style
+    st.write("**KNN Validation Accuracy:** 0.9971969566958412")  # Display KNN Accuracy in subheader style
+    
+
+    st.image("pictures/K_Means_Matrix.png", caption=None, width=None, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+
 
     # Display styled DataFrame
     st.dataframe(styled_df, height=200, width=700)
@@ -274,11 +285,11 @@ def model_training():
     st.markdown("""**Let's see how it performs:**""", unsafe_allow_html=True)
 
     data = {
-    "Class": ["0.0", "1.0", "accuracy", "macro avg", "weighted avg"],
-    "Precision": [1.00, 1.00, "", 1.00, 1.00],
-    "Recall": [1.00, 1.00, "", 1.00, 1.00],
-    "F1-Score": [1.00, 1.00, 1.00, 1.00, 1.00],
-    "Support": [17502, 17460, 34962, 34962, 34962]
+    "Class": ["0.0", "1.0", "macro avg", "weighted avg"],
+    "Precision": [1.00, 1.00, 1.00, 1.00],
+    "Recall": [1.00, 1.00, 1.00, 1.00],
+    "F1-Score": [1.00, 1.00, 1.00, 1.00],
+    "Support": [17502, 17460, 34962, 34962]
     }
 
     # Create DataFrame
@@ -297,6 +308,10 @@ def model_training():
 
     # Streamlit app
     st.write("**RF Accuracy:** 0.999942795034609")  # Display RF Accuracy in subheader style
+    st.write("**RF Validation Accuracy:** 0.9999141925519135")  # Display KNN Accuracy in subheader style
+
+    st.image("pictures/Random_Forest_Matrix.png", caption=None, width=None, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+
 
     # Display styled DataFrame
     st.dataframe(styled_df, height=200, width=700)
@@ -360,8 +375,11 @@ def fraud_detector_model(input_data):
     knn = neighbors.KNeighborsClassifier(n_neighbors=3)
     knn.fit(x_train, y_train)
 
+    rf = RandomForestClassifier(random_state=123)
+    rf.fit(x_train, y_train)
+
     input_data_scaled = scale.transform(input_data)
-    prediction = knn.predict(input_data_scaled)
+    prediction = rf.predict(input_data_scaled)
     return "Fraudulent" if prediction[0] == 1 else "Not Fraudulent"
 
 # Create a sidebar with navigation options
