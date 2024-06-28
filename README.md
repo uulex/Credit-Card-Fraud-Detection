@@ -4,6 +4,8 @@
 
 ![this is how credit card fraud works (believe us we are experts)](https://github.com/uulex/ML4B/blob/main/dataset-cover.jpg?raw=true)
 
+[Streamlit App](https://ccfraud.streamlit.app)
+
 ## Motivation
 Our team wants to develop a machine learning program that can automatically detect fraudulent credit card transactions and flag them as such.
 
