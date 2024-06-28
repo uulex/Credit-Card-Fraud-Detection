@@ -85,7 +85,7 @@ def data_exploration():
     st.title("Data Exploration")
     st.subheader("Raw Data")
     st.markdown("""
-    The columns of our dataset consist of <span style="color: red;">8 transaction attributes</span> and the <span style="color: red;">Class</span> which determines 
+    The columns of our dataset consist of <span style="color: red;">7 transaction attributes</span> and the <span style="color: red;">Class</span> which determines 
     if a transaction was <span style="color: red;">fraudulent or not</span> (1 = fraudulent; 0 = not fraudulent). 
     The <span style="color: red;">total number of rows</span> in our dataset is <span style="color: red;">1000000</span>.
     """, unsafe_allow_html=True)
@@ -201,7 +201,7 @@ def model_training():
     #st.image("pictures/LR_Matrix.png", caption=None, width=None, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
     st.markdown("""We are now left with about <span style="color: red;">17.5% of the rows in our dataset</span>, which should still be enough to get well-trained ML-Models. Now that our dataset is balanced we will <span style="color: red;">seperate dependent</span> and <span style="color: red;">independet features</span>, which in our case means <span style="color: red;">droping the classifier</span> and saving it in a <span style="color: red;">seperate array</span>.""", unsafe_allow_html=True)
-    st.markdown("""The last step before we can finally start training our models is to <span style="color: red;">seperate</span> our data into <span style="color: red;">training- and testing-data</span>. We decided to go for a <span style="color: red;">75% training</span> and <span style="color: red;">25% testing</span> split.""", unsafe_allow_html=True)
+    st.markdown("""The last step before we can finally start training our models is to <span style="color: red;">seperate</span> our data into <span style="color: red;">training- and testing-data</span>. We decided to go for a <span style="color: red;">80% training</span> and <span style="color: red;">20% testing</span> split.""", unsafe_allow_html=True)
 
     st.subheader("Logistic Regression")
     st.markdown("""Logistic Regression is a <span style="color: red;">supervised machine learning algorithm</span> used for <span style="color: red;">binary classification</span>. It is well suited for <span style="color: red;">predictive modeling</span>.""", unsafe_allow_html=True)
